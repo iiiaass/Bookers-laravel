@@ -1,0 +1,18 @@
+## 作業する時
+1. ブランチを切る(developから)
+  - git checkout -b 作業ブランチ名
+2. 作業する
+3. 終わったらローカルリポジトリに反映させる
+  - git add -A
+  - git commit -m "コミットメッセージ"
+4. リモートリポジトリに反映させる
+  - git push origin 作業ブランチ名
+5. プルリク出す
+
+## プルリクマージされたらローカルリポジトリに反映させる
+1. git checkout develop
+2. git pull origin develop
+→　作業する
+
+## コミット取り消したいとき
+- git reset --soft HEAD^
