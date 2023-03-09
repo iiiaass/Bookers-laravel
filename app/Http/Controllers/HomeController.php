@@ -53,6 +53,17 @@ class HomeController extends Controller
         return redirect()->route('home');
     }
     
+
+    public function edit($id){    //$idは引数　editのroutingと対応している
+        // 該当するIDのメモをデータベースから取得
+        $user = \Auth::user();
+        $memo = Memo::where('status', 1)->where('id', $id)->where('user_id', $user['id'])  //statusが1かつ、memosテーブルのidがURLパラメータ（URLの数字）と同じものかつ、userのidが今ログインしているuserのidと一致すること
+          ->first();    //first->条件が一致した物を一行だけ取ってくるメソッド
+        //   dd($memo);
+        //取得したメモをViewに渡す
+        $memos = Memo::where('user_id', $user['id'])->where('status',1)->orderby('updated_at','DESC')->get();   //自分が所有しているメモ,かつstatusが１のメモを取得する    //where->取ってくるデータの条件を指定できる
+        return view('edit',compact('memo','user','memos'));
+    }
 }   
 
 
