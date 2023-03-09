@@ -16,3 +16,5 @@
 
 ## コミット取り消したいとき
 - git reset --soft HEAD^
+## コミットの履歴を確認したいとき
+- git log --oneline
