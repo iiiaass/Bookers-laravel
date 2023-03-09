@@ -24,13 +24,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = \Auth::user();    //ログインしているユーザーの情報をViewに渡す
+        //メモ一覧を取得する
+        $memos = Memo::where('user_id', $user['id'])->where('status',1)->orderby('updated_at','DESC')->get();   //自分が所有しているメモ,かつstatusが１のメモを取得する    //where->取ってくるデータの条件を指定できる
+        return view('home',compact('user','memos'));                                                     //orderby->並べ方を指定できる(ASC=昇順、DESC=降順)
     }
 
     public function create()
     {
-        //ログインしているユーザーの情報をViewに渡す
-        $user = \Auth::user();
+        $user = \Auth::user();    //ログインしているユーザーの情報をViewに渡す
         return view('create',compact('user'));
     }
 
