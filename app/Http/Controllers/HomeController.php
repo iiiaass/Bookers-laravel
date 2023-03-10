@@ -33,7 +33,8 @@ class HomeController extends Controller
     public function create()
     {
         $user = \Auth::user();    //ログインしているユーザーの情報をViewに渡す
-        return view('create',compact('user'));
+        $memos = Memo::where('user_id', $user['id'])->where('status',1)->orderby('updated_at','DESC')->get();   //自分が所有しているメモ,かつstatusが１のメモを取得する    //where->取ってくるデータの条件を指定できる
+        return view('create',compact('user','memos'));
     }
 
     public function store(Request $request) //Requestを使うと、フォームに入力されたメモの内容、ユーザーidをコントローラで受け取ることが出来る。//
