@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Memo;
+use App\Models\Tag;
 
 class HomeController extends Controller
 {
@@ -34,7 +35,7 @@ class HomeController extends Controller
     {
         $user = \Auth::user();    //ログインしているユーザーの情報をViewに渡す
         $memos = Memo::where('user_id', $user['id'])->where('status',1)->orderby('updated_at','DESC')->get();   //自分が所有しているメモ,かつstatusが１のメモを取得する    //where->取ってくるデータの条件を指定できる
-        return view('create',compact('user','memos'));
+        return view('create',compact('user',));
     }
 
     public function store(Request $request) //Requestを使うと、フォームに入力されたメモの内容、ユーザーidをコントローラで受け取ることが出来る。//
@@ -44,9 +45,14 @@ class HomeController extends Controller
         // POSTされたデータをDB（memosテーブル）に挿入
         // MEMOモデルにDBへ保存する命令を出す
 
+        //先にタグをインサート（リレーション）
+        $tag_id = Tag::insertGetId(['name' => $data['tag'], 'uaer_id' => $data['uaer_id']]);    //tagの名前には入力したタグネームを入れる、user_idにはPOSTされてくるuser_idを入れる
+        //タグのidが判明する
+        //他でidをmemosテーブルに入れてあげる
         $memo_id = Memo::insertGetId([   //insert それぞれデータを定義して、データベースに挿入していっている
             'content' => $data['content'],
              'user_id' => $data['user_id'], 
+             'tag_id' => $tag_id,
              'status' => 1
         ]); 
         
@@ -63,6 +69,7 @@ class HomeController extends Controller
         //   dd($memo);
         //取得したメモをViewに渡す
         $memos = Memo::where('user_id', $user['id'])->where('status',1)->orderby('updated_at','DESC')->get();   //自分が所有しているメモ,かつstatusが１のメモを取得する    //where->取ってくるデータの条件を指定できる
+        
         return view('edit',compact('memo','user','memos'));
     }
 }   
