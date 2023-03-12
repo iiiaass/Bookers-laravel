@@ -89,6 +89,15 @@ class HomeController extends Controller
         Memo::where('id', $id)->update(['content' => $inputs['content'],'tag_id'=>$inputs['tag_id']]);     //whereでどこをupdateするのか指定する。idはURLパラメータに入っているもの、そのあとupdateしたい内容を配列で指定。contentの内容を更新したいので$inputsのcontentの内容に更新します。という意味
         return redirect()->route('home');    // リダイレクト処理->別のページへ遷移すること                                                                        
     }
+
+
+    public function update(Request $request, $id)    //$id->editのURLパラメータと同じく$idと書くことによってどこの行を更新するか受け取ることができる
+    {
+        $inputs = $request->all();
+        // dd($inputs);
+        Memo::where('id', $id)->update(['content' => $inputs['content']]);     //whereでどこをupdateするのか指定する。idはURLパラメータに入っているもの、そのあとupdateしたい内容を配列で指定。contentの内容を更新したいので$inputsのcontentの内容に更新します。という意味
+        return redirect()->route('home');    // リダイレクト処理->別のページへ遷移すること                                                                        
+    }
 }   
 
 
