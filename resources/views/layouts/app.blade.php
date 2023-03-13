@@ -79,7 +79,7 @@
         <main class="main">
         @if(session('success'))
             <div class="alert alert-success" role="alert">
-              {{ session('success') }}
+              {{ session('success')}}     <!--フラッシュメッセージ-->
             </div>
         @endif
           <div class="row" style='height: 92vh;'>
