@@ -90,6 +90,18 @@ class HomeController extends Controller
         Memo::where('id', $id)->update(['content' => $inputs['content']]);     //whereでどこをupdateするのか指定する。idはURLパラメータに入っているもの、そのあとupdateしたい内容を配列で指定。contentの内容を更新したいので$inputsのcontentの内容に更新します。という意味
         return redirect()->route('home');    // リダイレクト処理->別のページへ遷移すること                                                                        
     }
+
+    public function delete(Request $request, $id)   //$id-> URLパラメータのid
+    {
+        $inputs = $request->all();
+        // dd($inputs);
+        // 論理削除なので、status=2
+        Memo::where('id', $id)->update([ 'status' => 2 ]);
+        // ↓は物理削除
+        // Memo::where('id', $id)->delete();
+                                                            //フラッシュメッセージ
+        return redirect()->route('home')->with('success', 'メモの削除が完了しました！');
+    }
 }   
 
 
